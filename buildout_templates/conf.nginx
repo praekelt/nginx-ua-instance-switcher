@@ -5,6 +5,11 @@ upstream high {
 upstream medium {
     server 127.0.0.1:82;
 }
+
+upstream memcached {
+  server ${memcached-supervisor:interface}:${memcached-supervisor:port};
+  keepalive 1024 single;
+}
     
 server {
     listen 80;
@@ -13,7 +18,7 @@ server {
     # Look up backend in Memcached.
     location /mapper/map-request/ {
         set_md5 $memcached_key $http_user_agent;
-        memcached_pass ${memcached-supervisor:interface}:${memcached-supervisor:port};
+        memcached_pass memcached; 
         error_page 404 405 500 502 @mapper;
     }
     

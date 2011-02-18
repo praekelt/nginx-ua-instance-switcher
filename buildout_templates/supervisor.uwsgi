@@ -1,5 +1,5 @@
-[program:${name}.memcached]
-command=${buildout:bin-directory}/uwsgi -x l ${buildout:directory}/uwsgi/uwsgi.xml
+[program:${name}.uwsgi]
+command=${buildout:bin-directory}/uwsgi -x ${buildout:directory}/uwsgi/uwsgi.xml
 user=${user}
 stdout_logfile=${log}
 redirect_stderr=true
