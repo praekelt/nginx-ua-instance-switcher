@@ -1,43 +1,37 @@
+upstream high {
+    server 127.0.0.1:81;
+}
+
+upstream medium {
+    server 127.0.0.1:82;
+}
+    
 server {
-    # base
-    listen ${port};
-    server_name ${buildout:server-name}; 
-
-    upstream high {
-        server   ${fcgi-high:host}:${fcgi-high:port};
-    }
-    upstream medium {
-        server   ${fcgi-medium:host}:${fcgi-medium:port};
-    }
-
-    # Looks up device class in Memcached.
+    listen 80;
+    server_name localhost; 
+  
+    # Look up backend in Memcached.
     location /mapper/map-request/ {
-        default_type text/plain;
         set_md5 $memcached_key $http_user_agent;
-        memcached_pass ${memcached:interface}:${memcached:port};
+        memcached_pass ${memcached-supervisor:interface}:${memcached-supervisor:port};
         error_page 404 405 500 502 @mapper;
     }
     
-    # Looks up device class in UWSGI.
+    # Look up backend in UWSGI.
     location @mapper {
         include uwsgi_params;
-        uwsgi_pass   localhost:9000;
+        uwsgi_param MEMCACHED_SOCKET ${memcached-supervisor:interface}:${memcached-supervisor:port};
+        uwsgi_pass ${uwsgi:socket};
     }
-
-    # fcgi
+   
+    # Pass request to user-agent appropriate backend.
     location / {
-        # Lookup device appropriate backend.
+        # Lookup device backend.
         set $backend "";
-        set_md5 $memcached_key $request_uri;
         access_by_lua '
             ngx.var.backend = ngx.location.capture("/mapper/map-request/").body
             ngx.exit(ngx.OK)
         ';
-
-        proxy_pass  http://@backend;
+        proxy_pass  http://$backend;
     }
-
-    # loging
-    access_log  ${buildout:directory}/log/access.log;
-    error_log   ${buildout:directory}/log/error.log;
 }

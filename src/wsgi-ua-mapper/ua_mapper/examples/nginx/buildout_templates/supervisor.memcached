@@ -1,6 +1,0 @@
-[program:${name}.memcached]
-command=memcached -l ${interface} -p ${port} -m ${memory}
-user=${user}
-stdout_logfile=${log}
-redirect_stderr=true
-stopsignal=QUIT

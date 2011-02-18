@@ -1,14 +1,13 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='wsgi-ua-mapper',
+    name='example-mapper',
     version='0.0.1',
-    description='WSGI app mapping requesting User Agent to arbitrary value through user defined module. Utilizes Wurfl to deliver requesting device info.',
-    long_description = open('README.rst', 'r').read() + open('AUTHORS.rst', 'r').read() + open('CHANGELOG.rst', 'r').read(),
+    description=''
     author='Praekelt Foundation',
     author_email='dev@praekelt.com',
     license='BSD',
-    url='http://github.com/praekelt/wsgi-ua-mapper',
+    url='http://github.com/praekelt/nginx-ua-instance-switcher',
     packages = find_packages(),
     include_package_data=True,
     classifiers = [
@@ -20,7 +19,7 @@ setup(
         "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
     ],
     install_requires = [
-        'pywurfl',
+        'wsgi-ua-mapper'
     ],
     zip_safe=False,
 )
