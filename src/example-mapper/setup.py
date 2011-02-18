@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 setup(
     name='example-mapper',
     version='0.0.1',
-    description=''
+    description='',
     author='Praekelt Foundation',
     author_email='dev@praekelt.com',
     license='BSD',
