@@ -1,0 +1,12 @@
+*.egg-info/
+*.swp
+*.pyc
+ua_mapper/management/commands/wurfl.*
+*.installed.cfg
+/ua_mapper/examples/nginx/bin/
+/ua_mapper/examples/nginx/develop-eggs/
+/ua_mapper/examples/nginx/downloads/
+/ua_mapper/examples/nginx/eggs/
+/ua_mapper/examples/nginx/nginx/
+/ua_mapper/examples/nginx/parts/
+/ua_mapper/examples/nginx/supervisor/
