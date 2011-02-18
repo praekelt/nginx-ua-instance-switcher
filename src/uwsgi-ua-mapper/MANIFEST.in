@@ -1,0 +1,10 @@
+include AUTHORS.rst
+include LICENSE
+include CHANGELOG.rst
+include README.rst
+include ua_mapper/examples/nginx/bootstrap.py
+include ua_mapper/examples/nginx/buildout.cfg
+recursive-include ua_mapper/examples/nginx/buildout_templates *
+recursive-include ua_mapper/examples/nginx/log *
+recursive-include ua_mapper/examples/nginx/project *
+recursive-include ua_mapper/tests/nginx *
