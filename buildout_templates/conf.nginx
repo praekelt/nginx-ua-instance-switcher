@@ -16,14 +16,13 @@ server {
     server_name localhost; 
   
     # Look up backend in Memcached.
-    location /mapper/map-request/ {
+    location /map-request/cached/ {
         set_md5 $memcached_key $http_user_agent;
         memcached_pass memcached; 
-        error_page 404 405 500 502 @mapper;
     }
     
     # Look up backend in UWSGI.
-    location @mapper {
+    location /map-request/dynamic/ {
         include uwsgi_params;
         uwsgi_param MEMCACHED_SOCKET ${memcached-supervisor:interface}:${memcached-supervisor:port};
         uwsgi_pass ${uwsgi:socket};
@@ -34,9 +33,16 @@ server {
         # Lookup device backend.
         set $backend "";
         access_by_lua '
-            ngx.var.backend = ngx.location.capture("/mapper/map-request/").body
+            local result = ngx.location.capture("/map-request/cached/")
+            if result.status == 200 then
+                ngx.var.backend = result.body
+            else
+                local result = ngx.location.capture("/map-request/dynamic/")
+                ngx.var.backend = result.body
+            end
             ngx.exit(ngx.OK)
         ';
         proxy_pass  http://$backend;
+        proxy_set_header Host $http_host;
     }
 }
