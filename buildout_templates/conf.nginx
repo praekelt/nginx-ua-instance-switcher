@@ -1,48 +1,51 @@
-upstream high {
+# Mobile upstream.
+upstream mobile {
     server 127.0.0.1:81;
 }
-
-upstream medium {
+ 
+# Desktop upstream.
+upstream desktop {
     server 127.0.0.1:82;
 }
-
+ 
+# Memcached upstream used to store device upstream values.
 upstream memcached {
-  server ${memcached-supervisor:interface}:${memcached-supervisor:port};
-  keepalive 1024 single;
+    server ${memcached-supervisor:interface}:${memcached-supervisor:port};
+    keepalive 1024 single;
 }
     
 server {
     listen 80;
     server_name localhost; 
-  
-    # Look up backend in Memcached.
-    location /map-request/cached/ {
-        set_md5 $memcached_key $http_user_agent;
-        memcached_pass memcached; 
-    }
     
-    # Look up backend in UWSGI.
+    # Lookup upstream in uWSGI.
     location /map-request/dynamic/ {
         include uwsgi_params;
         uwsgi_param MEMCACHED_SOCKET ${memcached-supervisor:interface}:${memcached-supervisor:port};
         uwsgi_pass ${uwsgi:socket};
     }
-   
-    # Pass request to user-agent appropriate backend.
+  
+    # Lookup upstream in Memcached.
+    location /map-request/cached/ {
+        set_md5 $memcached_key $http_user_agent;
+        memcached_pass memcached; 
+    }
+    
+    # Pass request to user-agent appropriate upstream.
     location / {
-        # Lookup device backend.
-        set $backend "";
+        # Lookup device upstream.
+        set $upstream "";
         access_by_lua '
             local result = ngx.location.capture("/map-request/cached/")
             if result.status == 200 then
-                ngx.var.backend = result.body
+                ngx.var.upstream = result.body
             else
                 local result = ngx.location.capture("/map-request/dynamic/")
-                ngx.var.backend = result.body
+                ngx.var.upstream = result.body
             end
             ngx.exit(ngx.OK)
         ';
-        proxy_pass  http://$backend;
+        proxy_pass  http://$upstream;
         proxy_set_header Host $http_host;
     }
 }
