@@ -47,5 +47,6 @@ server {
         ';
         proxy_pass  http://$upstream;
         proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $http_x_forwarded_for;
     }
 }
