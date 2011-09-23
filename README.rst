@@ -8,7 +8,7 @@ This is an example implimentation illustrating how you could harness Nginx, Wurf
 Overview
 --------
 
-..image:: https://github.com/downloads/praekelt/nginx-ua-instance-switcher/switcher.png
+.. image:: https://github.com/downloads/praekelt/nginx-ua-instance-switcher/switcher.png
 
 You can think of this whole process as load balancing but instead of round robin for instance the requesting device's capabilities determines which instance the request is forwarded to. Specifically, a device class is computed utilising Wurfl within a WSGI process. Once a device class is determined it is stored in Memcached using the requesting user-agent as key for future lookups. Nginx then simply forwards the request to a device class appropriate instance using the proxy_pass and upstream directives.
 
