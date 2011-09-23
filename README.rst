@@ -10,7 +10,7 @@ Overview
 
 .. image:: https://github.com/downloads/praekelt/nginx-ua-instance-switcher/switcher.png
 
-You can think of this whole process as load balancing but instead of round robin for instance the requesting device's capabilities determines which instance the request is forwarded to. Specifically, a device class is computed utilising Wurfl within a WSGI process. Once a device class is determined it is stored in Memcached using the requesting user-agent as key for future lookups. Nginx then simply forwards the request to a device class appropriate instance using the proxy_pass and upstream directives.
+You can think of this whole process as load balancing but instead of round robin for instance the requesting device's capabilities determines which instance the request is forwarded to. Specifically, a device class is computed utilising Wurfl within a WSGI process. Once a device class is determined it is stored in Memcached using the requesting user-agent as key for future lookups. Nginx then simply forwards the request to a device class appropriate instance using the ``proxy_pass`` and ``upstream`` directives.
 
 This approach is very fast since Memcached should over time contain all potential requesting user-agents, thus negating the need for slow Wurfl lookups. Also since the request is forwarded to an arbitrary upstream process this solution can be used with a variety of implementations, i.e. Django, Rails, PHP etc. For instance you can very happily implement a touch instance in Django and a desktop instance in Rails and run each without any knowledge of the other.
 
