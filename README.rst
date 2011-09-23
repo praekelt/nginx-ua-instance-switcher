@@ -18,10 +18,10 @@ Configuration Specifics
 -----------------------
 In order for any of this to work you need a custom compiled version of Nginx that includes the following 3rd party modules:
 
-    `Upstream Keepalive <http://wiki.nginx.org/HttpUpstreamKeepaliveModule>`_ – Provides keep-alive connections to Memcached upstreams.
-    `Lua <http://github.com/chaoslawful/lua-nginx-module>`_ – Embed the power of Lua into Nginx.
-    `Set Hash <https://github.com/simpl/ngx_http_set_hash>`_ – Set a variable to a variety of hash functions (upper/lowercase), including MD5.
-    `uWSGI <http://wiki.nginx.org/HttpUwsgiModule>`_ – Allows Nginx to interact with uWSGI processes.
+#. `Upstream Keepalive <http://wiki.nginx.org/HttpUpstreamKeepaliveModule>`_ - Provides keep-alive connections to Memcached upstreams.
+#. `Lua <http://github.com/chaoslawful/lua-nginx-module>`_ - Embed the power of Lua into Nginx.
+#. `Set Hash <https://github.com/simpl/ngx_http_set_hash>`_ - Set a variable to a variety of hash functions (upper/lowercase), including MD5.
+#. `uWSGI <http://wiki.nginx.org/HttpUwsgiModule>`_ - Allows Nginx to interact with uWSGI processes.
 
 You can find an Ubuntu 10.04 PPA containing this custom Nginx `here <https://launchpad.net/~praekelt/+archive/nginx>`_.
 
