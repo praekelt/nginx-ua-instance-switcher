@@ -102,5 +102,5 @@ The third location, ``/``, ties everything together. It uses Lua for some logic.
 
 So as an example lets say I access localhost using Firefox on my desktop computer. Lua tries to lookup an upstream for the requesting user-agent from Memcached. Lets say this is the first request to localhost from Firefox. At this stage Memcached will not yet have an upstream defined for the Firefox user-agent and will thus return a 404 status code. Lua then tries to lookup an upstream using the uWSGI process. Since Wurfl determines Firefox to have a resolution width larger than 500 pixels the WSGI app will return ``desktop`` as response body, as well as storing ``desktop`` in Memcached (using the md5 hashed user-agent string as key). The ``$upstream`` variable's value is now set as desktop in Nginx and the request is forwarded to the desktop usptream process defined as ``127.0.0.1:82``. On subsequent requests Memcached should contain a value for the Firefox user-agent string as stored by the WSGI app and hence the uWSGI location will not be accessed.
 
-You can reference the Buildout contained here as a compete example.
+You can reference the Buildout contained here as a complete example.
 
